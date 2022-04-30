@@ -1,0 +1,25 @@
+plugins {
+    id 'java'
+}
+
+group 'tux.pt.radio'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'javazoom:jlayer:1.0.1'
+    implementation 'com.mpatric:mp3agic:0.9.1'
+}
+
+jar {
+    from('src/main/resources') {
+        include '*'
+    }
+        manifest {
+            attributes "Main-Class": "tux.pt.radio.Main"
+        }
+
+}
