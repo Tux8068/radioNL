@@ -1,5 +1,6 @@
 package tux.pt.radio;
 
+import com.formdev.flatlaf.FlatDarculaLaf;
 import tux.pt.radio.gui.RadioGui;
 
 import javax.swing.*;
@@ -8,20 +9,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Main {
-
     public static void main(String[] args) {
         try {
-            for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            UIManager.setLookAndFeel(new FlatDarculaLaf());
+        } catch (UnsupportedLookAndFeelException ex) {
             Logger.getLogger(RadioGui.class.getName()).log(Level.SEVERE, "Error: ", ex);
+        } finally {
+            EventQueue.invokeLater(() -> new RadioGui().setVisible(true));
         }
-
-        EventQueue.invokeLater(() -> new RadioGui().setVisible(true));
     }
-
 }

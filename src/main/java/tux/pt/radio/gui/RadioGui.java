@@ -1,8 +1,6 @@
 package tux.pt.radio.gui;
 
-import com.mpatric.mp3agic.*;
 import tux.pt.radio.helper.AudioHelper;
-import tux.pt.radio.helper.ID3v2Helper;
 import tux.pt.radio.helper.TimerHelper;
 
 import javax.swing.*;
@@ -14,7 +12,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
@@ -27,8 +24,6 @@ public class RadioGui extends JFrame {
     }
 
     private String url, host, name;
-
-    private static Random random;
 
     private static final TimerHelper timer = new TimerHelper();
     private static JComboBox<String> jComboBox1;
@@ -74,7 +69,7 @@ public class RadioGui extends JFrame {
         recordCheckBox.setEnabled(true);
 
         jComboBox1.setFont(new Font("Yu Gothic UI Semilight", Font.PLAIN, 12));
-        jComboBox1.setModel(new DefaultComboBoxModel<>(new String[]{"Haarlem105", "Barok", "NPORadio", "LansingerlandFM"}));
+        jComboBox1.setModel(new DefaultComboBoxModel<>(new String[]{"Haarlem105", "Barok", "NPORadio", "LansingerlandFM", "OmroepZeeland"}));
         jComboBox1.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(255, 153, 0)));
 
         jButton1.setFont(new Font("Yu Gothic UI Semilight", Font.PLAIN, 12));
@@ -91,22 +86,21 @@ public class RadioGui extends JFrame {
 
         GroupLayout jPanel1Layout = new GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-                jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                        .addComponent(jProgressBar1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                                        .addComponent(enabledCheckBox)
-                                                        .addComponent(recordCheckBox))
-                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 291, Short.MAX_VALUE)
-                                                .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                                        .addComponent(jButton1, GroupLayout.Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 119, GroupLayout.PREFERRED_SIZE)
-                                                        .addGroup(GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                                                .addComponent(jComboBox1, GroupLayout.PREFERRED_SIZE, 119, GroupLayout.PREFERRED_SIZE)
-                                                                .addGap(0, 0, 0))))).addContainerGap()));
+        jPanel1Layout.setHorizontalGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                .addComponent(jProgressBar1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                                .addComponent(enabledCheckBox)
+                                                .addComponent(recordCheckBox))
+                                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 291, Short.MAX_VALUE)
+                                        .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                                .addComponent(jButton1, GroupLayout.Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 119, GroupLayout.PREFERRED_SIZE)
+                                                .addGroup(GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                                        .addComponent(jComboBox1, GroupLayout.PREFERRED_SIZE, 119, GroupLayout.PREFERRED_SIZE)
+                                                        .addGap(0, 0, 0))))).addContainerGap()));
         jPanel1Layout.setVerticalGroup(
                 jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel1Layout.createSequentialGroup()
@@ -150,6 +144,11 @@ public class RadioGui extends JFrame {
                     case 3:
                         url = "http://145-53-208-11.fixed.kpn.net:8300/audiostream";
                         host = "lansingerland";
+                        break;
+
+                    case 4:
+                        url = "http://livestream.zeelandnet.nl:8000/omroepzeeland_radio";
+                        host = "omroepzeeland";
                 }
                 AudioHelper.setStream(new URL(url).openStream());
                 if (timer.passed(500)) {
@@ -174,7 +173,6 @@ public class RadioGui extends JFrame {
     }
 
     private void recordCheckBoxActionPerformed(ItemEvent evt) {
-        DateFormat DATE_FORMAT = null;
         if (evt.getStateChange() == ItemEvent.SELECTED && AudioHelper.isRunning()) {
 
             try {
@@ -192,6 +190,9 @@ public class RadioGui extends JFrame {
                 }
                 if (!Files.exists(Paths.get("radioNL/lansingerland/"))) {
                     Files.createDirectories(Paths.get("radioNL/lansingerland/"));
+                }
+                if (!Files.exists(Paths.get("radioNL/omroepzeeland/"))) {
+                    Files.createDirectories(Paths.get("radioNL/omroepzeeland/"));
                 }
 
             } catch (Exception e) {

@@ -13,6 +13,7 @@ repositories {
 dependencies {
     implementation 'javazoom:jlayer:1.0.1'
     implementation 'com.mpatric:mp3agic:0.9.1'
+    implementation 'com.formdev:flatlaf:2.2'
 }
 
 jar {
